@@ -105,6 +105,7 @@ class TripDetail(LoginRequiredMixin, DetailView):
         context['not_associated_destinations'] = not_associated_destinations
 
         context['users'] = User.objects.all()
+        context['accepted_users'] = self.object.accepted_users.all()
         
         # Pass the associated destinations to the template context
         context['associated_destinations'] = trip.destination_ids.all()
