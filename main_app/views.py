@@ -207,6 +207,7 @@ def invite_users(request, trip_id):
             return redirect('trips_detail', pk=trip_id)
     else:
         form = InvitationForm(instance=trip)
+        form.fields['accepted_users'].queryset = form.fields['accepted_users'].queryset.exclude(username='root')
     return render(request, 'main_app/invite_users.html', {'form': form, 'trip': trip, 'trip_id': trip_id})
 
 @login_required
