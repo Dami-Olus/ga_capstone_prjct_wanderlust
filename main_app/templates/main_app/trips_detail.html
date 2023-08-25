@@ -78,8 +78,9 @@
     {% if users.exists %}
       <div style="display: flex; gap: 20px; align-items: center;">
         {% for user in users %}
-          <p style="background-color: #9cc8e1; border-radius: 10px; padding: 2px 10px;">{{ user.username }}</p>
-          
+          {% if user.username != 'root' %}
+            <p style="background-color: #9cc8e1; border-radius: 10px; padding: 2px 10px;">{{ user.username }}</p>
+          {% endif %}
         {% endfor %}
         <a href="{% url 'invite_users' trips.id %}">Invite more friends!</a>
       </div>
