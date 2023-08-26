@@ -58,6 +58,10 @@ class TripIndex(LoginRequiredMixin, ListView):
             else:
                 past_trips.append(trip)
 
+        # sort trips by start date (asc for upcoming, desc for past)
+        upcoming_trips = sorted(upcoming_trips, key=lambda x: x.startDate)
+        past_trips = sorted(past_trips, key=lambda x: x.startDate, reverse=True)
+    
         context['upcoming_trips'] = upcoming_trips
         context['past_trips'] = past_trips
 
@@ -122,7 +126,7 @@ class TripDetail(LoginRequiredMixin, DetailView):
     
 class TripCreate(LoginRequiredMixin, CreateView): 
     model = Trips
-    fields = ['name', 'startDate', 'endDate', 'budget']
+    fields = ['name', 'country', 'startDate', 'endDate', 'budget']
     # this is to associate the user with the trip
     def form_valid(self, form):
         # Assign the logged in user (self.request.user)
@@ -152,6 +156,13 @@ class TripDelete(LoginRequiredMixin, DeleteView):
 class DestinationIndex(LoginRequiredMixin, ListView): 
     model = Destinations
     fields = '__all__'
+    
+    def get_queryset(self):
+        queryset = Destinations.objects.all().order_by('country', 'name')
+        search_query = self.request.GET.get('search', None)
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
+        return queryset
     
 class DestinationDetail(LoginRequiredMixin, DetailView): 
     model = Destinations
@@ -207,6 +218,7 @@ def invite_users(request, trip_id):
             return redirect('trips_detail', pk=trip_id)
     else:
         form = InvitationForm(instance=trip)
+        form.fields['accepted_users'].queryset = form.fields['accepted_users'].queryset.exclude(username='root')
     return render(request, 'main_app/invite_users.html', {'form': form, 'trip': trip, 'trip_id': trip_id})
 
 @login_required

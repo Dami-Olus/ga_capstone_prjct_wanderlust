@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Destinations(models.Model):
     name = models.CharField(max_length=250)
-    country = models.CharField(max_length=60)
+    country = models.CharField(max_length=60, default='')
     language = models.CharField(max_length=100)
     currency = models.CharField(max_length=3)
 
@@ -18,6 +18,7 @@ class Destinations(models.Model):
     
 class Trips(models.Model):
     name = models.CharField(max_length=250)
+    country = models.CharField(max_length=60, default='')
     startDate = models.DateField(null=True)
     endDate = models.DateField(null=True)
     budget = models.IntegerField(null=True)

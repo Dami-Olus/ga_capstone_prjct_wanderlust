@@ -9,9 +9,14 @@
         <div class="card-content">
             <form action="{% if update %}{% url 'trips_update' object.id %}{% else %}{% url 'trips_create' %}{% endif %}" method="POST">
                 {% csrf_token %}
-                {{ form.as_table }}
+                {{ form.name.label_tag }} {{ form.name }}
+                {{ form.country.label_tag }} {{ form.country }}
+                {{ form.startDate.label_tag }} {{ form.startDate }}
+                {{ form.endDate.label_tag }} {{ form.endDate }}
+                {{ form.budget.label_tag }} {{ form.budget }}
                 <input type="submit" value="Submit!" class="btn">
             </form>
+            
         </div>
     </div>
 </div>
