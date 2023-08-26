@@ -3,20 +3,42 @@
 {% block content %}
 
 <h1>{% if update %}Edit{% else %}Plan{% endif %} a Trip</h1>
-<div class="trips-form">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <div class="card">
-        <div class="card-content">
-            <form action="{% if update %}{% url 'trips_update' object.id %}{% else %}{% url 'trips_create' %}{% endif %}" method="POST">
-                {% csrf_token %}
-                {{ form.name.label_tag }} {{ form.name }}
-                {{ form.country.label_tag }} {{ form.country }}
-                {{ form.startDate.label_tag }} {{ form.startDate }}
-                {{ form.endDate.label_tag }} {{ form.endDate }}
-                {{ form.budget.label_tag }} {{ form.budget }}
-                <input type="submit" value="Submit!" class="btn">
-            </form>
-            
+
+<div class="row">
+    <div class="col s12 m6">
+        <div class="card">
+            <div class="card-content">
+                <form action="{% if update %}{% url 'trips_update' object.id %}{% else %}{% url 'trips_create' %}{% endif %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="input-field">
+                        {{ form.name.label_tag }} 
+                        {{ form.name }}
+                    </div>
+                    
+                    <div class="input-field">
+                        {{ form.country.label_tag }} 
+                        {{ form.country }}
+                    </div>
+                    
+                    <div class="input-field">
+                        {{ form.startDate.label_tag }} 
+                        <input type="text" class="datepicker" name="{{ form.startDate.name }}" id="{{ form.startDate.id }}">
+                    </div>
+                    
+                    <div class="input-field">
+                        {{ form.endDate.label_tag }} 
+                        <input type="text" class="datepicker" name="{{ form.endDate.name }}" id="{{ form.endDate.id }}">
+                    </div>
+                    
+                    <div class="input-field">
+                        {{ form.budget.label_tag }} 
+                        {{ form.budget }}
+                    </div>
+
+                    <button type="submit" class="btn">Submit!</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

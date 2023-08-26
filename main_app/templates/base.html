@@ -65,5 +65,19 @@
         <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%; background-color: #9cc8e1;">
           <div class="right">All Rights Reserved, &copy; 2023 Wanderlust &nbsp;</div>
       </footer>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('select');
+          var instances = M.FormSelect.init(elems, {});
+        });
+      </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.datepicker');
+            var instances = M.Datepicker.init(elems, {
+                format: 'yyyy-mm-dd' 
+            });
+        });
+    </script>
   </body>
 </html>
