@@ -51,27 +51,35 @@
 .checklist li.checklist-item:hover {
   background-color: #f0f0f0;
 }
+
+.place-img {
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
+}
 </style>
 
-<div style="margin-bottom: 80px;">
+<div style="margin-bottom: 80px; margin-top: 30px;">
   <div class="col s6 col-offset-3">
     <div style="display: flex; align-items: center;">
       <div>
         <img src="{% static 'assets/images/hero_img.png' %}" alt="" style="height: 200px; margin-right: 50px;">
       </div>
       <div class="card-content">
-        <span class="card-title">{{ object.name }}</span>
+        <h3 class="card-title">{{ object.name }}</h3>
         <p>{{ object.startDate }} - {{ object.endDate }}</p>
         
         <div class="card-action">
-          <a href="{% url 'trips_update' trips.id %}">Edit</a>
-          <a href="{% url 'trips_delete' trips.id %}">Delete</a>
+          <button> <a href="{% url 'trips_update' trips.id %}">Edit</a></button>
+         <button><a href="{% url 'trips_delete' trips.id %}">Delete</a></button>
+          
         </div>
       </div>
       
+      </div>
     </div>
-  </div>
-<div>
+  <div>
   
   <div>
     
@@ -104,28 +112,37 @@
       {% for destination in associated_destinations %}
         {% if destination.country == object.country %}
           <div>
-            <div class="card-content">
+            <div >
               {% with first_photo=destination.photos_set.first %} 
                   {% if first_photo%}
-                <img class="responsive-img" src="{{ first_photo.url }}" style="height: 200px; width: 200px;" />
+                <img  src="{{ first_photo.url }}" class="place-img" />
                   {% else %}
                 <div class="card-panel teal-text center-align">
                   <img src="assets/images/hero_img.png" alt="">
                 </div>
                   {% endif %} 
                 {% endwith %}
-              <h5 class="card-title"> {{ destination.name }} </h6>
-              <span class="card-title"> {{ destination.country }} </span>
+                
+              
             </div>
-            <div class="card-action">
-              <form
-                action="{% url 'unassoc_destination' trip_id=trips.id destination_id=destination.id %}"
-                method="POST"
-              >
-                {% csrf_token %}
-                <button type="submit" class="btn">Remove</button>
-              </form>
+            <div style="display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; gap: 15px;">
+              <div>
+                <h5> {{ destination.name }} | {{ destination.country }} </h6>
+                  
+              </div>
+
+              <div class="card-action">
+                <form
+                  action="{% url 'unassoc_destination' trip_id=trips.id destination_id=destination.id %}"
+                  method="POST"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="btn">Remove</button>
+                </form>
+              </div>
+              
             </div>
+            
           
         </div>
           {% endif %}
@@ -152,25 +169,31 @@
         <div class="card-content">
           {% with first_photo=destination.photos_set.first %} 
               {% if first_photo%}
-            <img class="responsive-img" src="{{ first_photo.url }}" style="height: 200px; width: 200px;" />
+            <img class="place-img" src="{{ first_photo.url }}"  />
               {% else %}
             <div class=" teal-text center-align">
               <img src="assets/images/hero_img.png" alt="">
             </div>
               {% endif %} 
             {% endwith %}
-          <h5 class="card-title"> {{ destination.name }} </h6>
-          <span class="card-title"> {{ destination.country }} </span>
+          
         </div>
-        <div class="card-action">
-          <form
-            action="{% url 'assoc_destination' trip_id=trips.id destination_id=destination.id %}"
-            method="POST"
-          >
-            {% csrf_token %}
-            <button type="submit" class="btn">Add</button>
-          </form>
+        <div style="display: flex; align-items: center; justify-content: flex-start; gap: 15px;">
+          <div>
+            <h5 class="card-title"> {{ destination.name }} | {{ destination.country }}</h6>
+              
+          </div>
+          <div class="card-action">
+            <form
+              action="{% url 'assoc_destination' trip_id=trips.id destination_id=destination.id %}"
+              method="POST"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
         </div>
+        
       
     </div>
       {% endif %}
@@ -214,22 +237,22 @@
               {% if place.photos %}
               <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ place.photos.0.photo_reference }}&key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y" alt="{{ place.name }}" style="height: 200px;">
               {% endif %}
-              <p>{{ place.name }}</p>
-                <p>{{ place.vicinity }} </p>
+              <p>{{ place.name }} | {{ place.vicinity }}</p>
               <p>Rating: {{place.rating|default:"0"}}/5 </p>
               <p>Reviewers: {{place.user_ratings_total|default:"0"}}</p>
               <p>(Open Now)</p>
             </div>
             {% else %}
-            <div class="red-text center-align" style="margin-right: 30px;">
+            <div class="red-text center-align" style="margin-right: 30px; margin-bottom: 20px;">
               {% if place.photos %}
-              <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ place.photos.0.photo_reference }}&key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y" alt="{{ place.name }}" style="height: 200px; width: 200px;">
+              <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ place.photos.0.photo_reference }}&key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y" alt="{{ place.name }}" class="place-img">
               {% endif %}
-              <p>{{ place.name }}</p>
-                <p>{{ place.vicinity }}</p> 
+              <div style="text-align: left; line-height: 8px;">
+              <p>{{ place.name }} | {{ place.vicinity }} </p>
               <p>Rating: {{place.rating|default:"0"}}/5 </p>
               <p>Reviewers: {{place.user_ratings_total|default:"0"}}</p>
               <p>(Closed Now)</p>
+            </div>
             </div>
             {% endif %}
           {% endfor %}
