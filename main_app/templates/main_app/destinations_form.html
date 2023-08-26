@@ -2,22 +2,37 @@
 {% load static %}
 {% block content %}
 <h1>Add Destination</h1>
-<form action="" method="POST">
-    <div class="destination-form">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
+<div class="destination-form">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <div class="card">
         <div class="card-content">
-    {% csrf_token %}
-    {{ form.as_table }}
-</table>
+            <form action="" method="POST">
+                {% csrf_token %}
+                
+                <div class="input-field">
+                    {{ form.name.label_tag }} 
+                    <input type="text" name="{{ form.name.name }}" id="{{ form.name.id }}" class="validate">
+                </div>
+                
+                <div class="input-field">
+                    {{ form.country.label_tag }}
+                    {{ form.country }}
+                </div>
+                
+                <div class="input-field">
+                    {{ form.language.label_tag }}
+                    <input type="text" name="{{ form.language.name }}" id="{{ form.language.id }}" class="validate">
+                </div>
+                
+                <div class="input-field">
+                    {{ form.currency.label_tag }}
+                    <input type="text" name="{{ form.currency.name }}" id="{{ form.currency.id }}" class="validate">
+                </div>
 
-
-<input type="submit" value="Submit!" class="btn">
-
-</form>
-</div>
-</div>
+                <input type="submit" value="Submit!" class="btn">
+            </form>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

@@ -17,7 +17,7 @@ from django.utils import timezone
 
 
 from .models import Trips, Destinations, Photos, Checklist, Travelers, Activities, TripRequest
-from .forms import ChecklistForm, ActivityForm, SignupForm, AddDestinationForm
+from .forms import ChecklistForm, ActivityForm, SignupForm, AddDestinationForm, TripCreateForm
 from datetime import datetime
 # import these for aws upload
 import googlemaps
@@ -122,12 +122,10 @@ class TripDetail(LoginRequiredMixin, DetailView):
         
         return context
 
-    
-    
 class TripCreate(LoginRequiredMixin, CreateView): 
     model = Trips
-    fields = ['name', 'country', 'startDate', 'endDate', 'budget']
-    # this is to associate the user with the trip
+    form_class = TripCreateForm  # Use the custom form class here
+
     def form_valid(self, form):
         # Assign the logged in user (self.request.user)
         form.instance.user = self.request.user
@@ -138,6 +136,7 @@ class TripCreate(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['update'] = False
         return context
+
     
 class TripUpdate(LoginRequiredMixin, UpdateView): 
     model = Trips
@@ -192,7 +191,7 @@ class DestinationDetail(LoginRequiredMixin, DetailView):
 
 class DestinationCreate(LoginRequiredMixin, CreateView): 
     model = Destinations
-    fields = ['name', 'country', 'language', 'currency']
+    form_class = AddDestinationForm
     
 class DestinationUpdate(LoginRequiredMixin, UpdateView): 
     model = Destinations
