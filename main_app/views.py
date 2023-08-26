@@ -58,6 +58,10 @@ class TripIndex(LoginRequiredMixin, ListView):
             else:
                 past_trips.append(trip)
 
+        # sort trips by start date (asc for upcoming, desc for past)
+        upcoming_trips = sorted(upcoming_trips, key=lambda x: x.startDate)
+        past_trips = sorted(past_trips, key=lambda x: x.startDate, reverse=True)
+    
         context['upcoming_trips'] = upcoming_trips
         context['past_trips'] = past_trips
 
@@ -152,6 +156,9 @@ class TripDelete(LoginRequiredMixin, DeleteView):
 class DestinationIndex(LoginRequiredMixin, ListView): 
     model = Destinations
     fields = '__all__'
+    
+    def get_queryset(self):
+        return Destinations.objects.all().order_by('country', 'name')
     
 class DestinationDetail(LoginRequiredMixin, DetailView): 
     model = Destinations
