@@ -72,11 +72,16 @@
         <h3 class="card-title">{{ object.name }}</h3>
         <p>{{ object.startDate }} - {{ object.endDate }}</p>
         
-        <div class="card-action">
-          <button> <a href="{% url 'trips_update' trips.id %}">Edit</a></button>
-         <button><a href="{% url 'trips_delete' trips.id %}">Delete</a></button>
-          
-        </div>
+        {% if object.user == request.user%}
+          <div class="card-action">
+            <button> <a href="{% url 'trips_update' trips.id %}">Edit</a></button>
+          <button><a href="{% url 'trips_delete' trips.id %}">Delete</a></button>
+          </div>
+        {% else %}
+          <div>
+            <p>Trip created by: {{object.user.username}}</p>
+          </div>
+        {% endif %}
       </div>
       
       </div>
