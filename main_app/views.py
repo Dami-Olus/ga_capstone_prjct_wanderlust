@@ -93,6 +93,10 @@ class TripDetail(LoginRequiredMixin, DetailView):
         if 'accept_invite' in request.POST:
             trip.accept_invitation(request.user)
 
+            trip_request = TripRequest.objects.get(trip=trip, receiver=request.user)
+            trip_request.status = 'accepted'
+            trip_request.save()
+
         return redirect('trips_detail', pk=trip.pk)
     
     
