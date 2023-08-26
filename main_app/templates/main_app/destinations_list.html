@@ -16,9 +16,10 @@
   {% if object_list %}
   <div style="display: flex; flex-wrap: wrap;">
     {% for destination in object_list %}
-    
-      <div style="margin-right: 15px;">
-        <div class="card-content">
+    <a href="{% url 'destinations_detail' pk=destination.id %}"
+    >
+      <div >
+        <div class="card-content" style="margin-right: 30px;">
           {% with first_photo=destination.photos_set.first %} 
             {% if first_photo%}
           <img src="{{ first_photo.url }}" style="height: 200px;
@@ -31,12 +32,16 @@
           </div>
             {% endif %} 
           {% endwith %}
-          <a href="{% url 'destinations_detail' pk=destination.id %}"
-            >{{ destination.name }} | {{ destination.country }}</a>
+          <div>
+         <p>
+              {{ destination.name }} | {{ destination.country }}
+            </p>
+          </div>
           
          
         </div>
       </div>
+    </a>
     
     {% if forloop.counter|divisibleby:"3" and not forloop.last %}
   </div>
