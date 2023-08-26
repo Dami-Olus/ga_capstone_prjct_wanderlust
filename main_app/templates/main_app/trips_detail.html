@@ -85,8 +85,10 @@
   
   <div>
     <div>
-      <h4>Invited Users:</h4>
+      
       {% if object.user == request.user %}
+      <a href="{% url 'invite_users' trips.id %}">Invite more friends!</a>
+      <h4>Invited Users:</h4>
 <div style="display: flex; gap: 20px; align-items: center;">
   {% for user in object.invited_users.all %}
   <p style="background-color: #9cc8e1; border-radius: 10px; padding: 2px 10px;">{{ user.username }}</p>
@@ -94,6 +96,13 @@
 </div>
 {% endif %}
     </div>
+
+    {% if request.user in object.invited_users.all %}
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" name="accept_invite">Accept Invite</button>
+    </form>
+  {% endif %}
     
     <h4>You are travelling with</h4>
     {% if accepted_users.exists %}
@@ -108,7 +117,7 @@
       <p>No accepted users for this trip.</p>
       
     {% endif %}
-    <a href="{% url 'invite_users' trips.id %}">Invite more friends!</a>
+   
   </div>
   
 </div>

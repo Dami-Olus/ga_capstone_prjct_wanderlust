@@ -86,6 +86,14 @@ class TripIndex(LoginRequiredMixin, ListView):
 class TripDetail(LoginRequiredMixin, DetailView): 
     model = Trips
     fields = '__all__'
+
+    def post(self, request, *args, **kwargs):
+        trip = self.get_object()
+
+        if 'accept_invite' in request.POST:
+            trip.accept_invitation(request.user)
+
+        return redirect('trips_detail', pk=trip.pk)
     
     
     def get_context_data(self, **kwargs):
