@@ -158,7 +158,11 @@ class DestinationIndex(LoginRequiredMixin, ListView):
     fields = '__all__'
     
     def get_queryset(self):
-        return Destinations.objects.all().order_by('country', 'name')
+        queryset = Destinations.objects.all().order_by('country', 'name')
+        search_query = self.request.GET.get('search', None)
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
+        return queryset
     
 class DestinationDetail(LoginRequiredMixin, DetailView): 
     model = Destinations
