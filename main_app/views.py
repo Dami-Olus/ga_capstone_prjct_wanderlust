@@ -44,12 +44,24 @@ class TripIndex(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         all_trips = Trips.objects.all()
 
+        # Get trips created by the user
+        user_created_trips = Trips.objects.filter(user=self.request.user)
+        
+        # Get trips accepted by the user
+        accepted_trips = Trips.objects.filter(accepted_users=self.request.user)
+        
+        # Combine the user's created trips and accepted trips
+        user_related_trips = user_created_trips | accepted_trips
+
+        # Get pending invitations for the logged-in user as the receiver
+        pending_invitations = TripRequest.objects.filter(receiver=self.request.user, status='pending')
+
         # Separate upcoming and past trips
         current_date = timezone.now().date()
         upcoming_trips = []
         past_trips = []
 
-        for trip in all_trips:
+        for trip in user_related_trips:
             days_until = (trip.startDate - current_date).days
             trip.days_until = days_until
 
@@ -64,25 +76,41 @@ class TripIndex(LoginRequiredMixin, ListView):
     
         context['upcoming_trips'] = upcoming_trips
         context['past_trips'] = past_trips
+        context['pending_invitations'] = pending_invitations
 
         return context
+
     
 
 
 class TripDetail(LoginRequiredMixin, DetailView): 
     model = Trips
     fields = '__all__'
+
+    def post(self, request, *args, **kwargs):
+        trip = self.get_object()
+
+        if 'accept_invite' in request.POST:
+            trip.accept_invitation(request.user)
+
+            trip_request = TripRequest.objects.get(trip=trip, receiver=request.user)
+            trip_request.status = 'accepted'
+            trip_request.save()
+
+        return redirect('trips_detail', pk=trip.pk)
     
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['invitation_form'] = InvitationForm()
+        
 
          # Get the trip object from the context
         trip = context['object']
         
         # Get all destinations that are not associated with the trip
         not_associated_destinations = Destinations.objects.exclude(id__in=trip.destination_ids.all())
+
         
         # Get methods from destinations details
         dest_view = DestinationDetail()
@@ -110,6 +138,8 @@ class TripDetail(LoginRequiredMixin, DetailView):
 
         context['users'] = User.objects.all()
         context['accepted_users'] = self.object.accepted_users.all()
+        context['invited_users'] = trip.invited_users.all()
+       
         
         # Pass the associated destinations to the template context
         context['associated_destinations'] = trip.destination_ids.all()
@@ -204,21 +234,27 @@ class DestinationDelete(LoginRequiredMixin, DeleteView):
 # View for routes: add checklist, add activity, add photo, assoc destination, invitations
 @login_required
 def invite_users(request, trip_id):
-    trip = get_object_or_404(Trips, id=trip_id)
-    print(trip_id)
+    trip = get_object_or_404(Trips, pk=trip_id)
+
+    # Get the list of users not added to the trip, excluding the trip creator
+    users_not_added = User.objects.exclude(id=trip.user_id).exclude(accepted_trips=trip_id)
+
     if request.method == 'POST':
-        form = InvitationForm(request.POST, instance=trip)
-        if form.is_valid():
-            accepted_users = form.save()
-            accepted_users.trip = trip
-            accepted_users.save()
-            print(accepted_users)
-            print(form.data)
-            return redirect('trips_detail', pk=trip_id)
-    else:
-        form = InvitationForm(instance=trip)
-        form.fields['accepted_users'].queryset = form.fields['accepted_users'].queryset.exclude(username='root')
-    return render(request, 'main_app/invite_users.html', {'form': form, 'trip': trip, 'trip_id': trip_id})
+        selected_user_ids = request.POST.getlist('selected_users')
+        selected_users = User.objects.filter(id__in=selected_user_ids)
+
+        for user in selected_users:
+            trip.invited_users.add(user)
+            TripRequest.objects.create(sender=request.user, receiver=user, trip=trip, status='pending')
+
+        return redirect('trips_detail', pk=trip_id)
+
+    context = {
+        'trip': trip,
+        'users_not_added': users_not_added,
+    }
+
+    return render(request, 'main_app/invite_users.html', context)
 
 @login_required
 def add_checklist(request, trip_id):

@@ -39,8 +39,10 @@
             </div>
           <div>
           <ul>
-            <!-- changes below -->
+            <!-- changes below --> 
+            <li><a href="">Welcome, {{user.username}}</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
+           
             {% if user.is_authenticated %}
            
             <li>
@@ -59,7 +61,7 @@
         </div>
       </nav>
     </header>
-    <main style="padding: 0 100px;">
+    <main style="padding: 100px 100px;">
         
         {% block content %} {% endblock %}</main>
         <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%; background-color: #9cc8e1;">

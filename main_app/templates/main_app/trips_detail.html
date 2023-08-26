@@ -60,6 +60,8 @@
 }
 </style>
 
+
+
 <div style="margin-bottom: 80px; margin-top: 30px;">
   <div class="col s6 col-offset-3">
     <div style="display: flex; align-items: center;">
@@ -70,18 +72,42 @@
         <h3 class="card-title">{{ object.name }}</h3>
         <p>{{ object.startDate }} - {{ object.endDate }}</p>
         
-        <div class="card-action">
-          <button> <a href="{% url 'trips_update' trips.id %}">Edit</a></button>
-         <button><a href="{% url 'trips_delete' trips.id %}">Delete</a></button>
-          
-        </div>
+        {% if object.user == request.user%}
+          <div class="card-action">
+            <button> <a href="{% url 'trips_update' trips.id %}">Edit</a></button>
+          <button><a href="{% url 'trips_delete' trips.id %}">Delete</a></button>
+          </div>
+        {% else %}
+          <div>
+            <p>Trip created by: {{object.user.username}}</p>
+          </div>
+        {% endif %}
       </div>
       
       </div>
     </div>
-  <div>
+<div>
   
   <div>
+    <div>
+      
+      {% if object.user == request.user %}
+      <a href="{% url 'invite_users' trips.id %}">Invite more friends!</a>
+      <h4>Invited Users:</h4>
+<div style="display: flex; gap: 20px; align-items: center;">
+  {% for user in object.invited_users.all %}
+  <p style="background-color: #9cc8e1; border-radius: 10px; padding: 2px 10px;">{{ user.username }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+    </div>
+
+    {% if request.user in object.invited_users.all %}
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" name="accept_invite">Accept Invite</button>
+    </form>
+  {% endif %}
     
     <h4>You are travelling with</h4>
     {% if accepted_users.exists %}
@@ -96,7 +122,7 @@
       <p>No accepted users for this trip.</p>
       
     {% endif %}
-    <a href="{% url 'invite_users' trips.id %}">Invite more friends!</a>
+   
   </div>
   
 </div>
@@ -106,7 +132,7 @@
   
   <div>
     <h4>Planned Destinations</h4>
-    <div style="display: flex; gap: 20px;">
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
     {% if associated_destinations %} 
     
       {% for destination in associated_destinations %}
@@ -130,7 +156,7 @@
                 <h5> {{ destination.name }} | {{ destination.country }} </h6>
                   
               </div>
-
+            {% if object.user == request.user %}
               <div class="card-action">
                 <form
                   action="{% url 'unassoc_destination' trip_id=trips.id destination_id=destination.id %}"
@@ -140,6 +166,7 @@
                   <button type="submit" class="btn">Remove</button>
                 </form>
               </div>
+            {% endif %}
               
             </div>
             
@@ -160,7 +187,7 @@
 
   <!-- Destinations not added to trip -->
   <h4>More Destinations related to your trip</h4>
-  <div style="display: flex; gap: 25px;">
+  <div style="display: flex; gap: 25px; flex-wrap: wrap;">
     
     {% if not_associated_destinations %} 
       {% for destination in not_associated_destinations %}
@@ -235,12 +262,14 @@
             {% if place.opening_hours.open_now %}
             <div class=" teal-text center-align" style="margin-right: 30px;">
               {% if place.photos %}
-              <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ place.photos.0.photo_reference }}&key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y" alt="{{ place.name }}" style="height: 200px;">
+              <img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ place.photos.0.photo_reference }}&key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y" alt="{{ place.name }}" class="place-img">
               {% endif %}
+              <div style="text-align: left; line-height: 8px;">
               <p>{{ place.name }} | {{ place.vicinity }}</p>
               <p>Rating: {{place.rating|default:"0"}}/5 </p>
               <p>Reviewers: {{place.user_ratings_total|default:"0"}}</p>
               <p>(Open Now)</p>
+            </div>
             </div>
             {% else %}
             <div class="red-text center-align" style="margin-right: 30px; margin-bottom: 20px;">
