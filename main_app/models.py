@@ -24,7 +24,14 @@ class Trips(models.Model):
     budget = models.IntegerField(null=True)
     destination_ids = models.ManyToManyField(Destinations, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    invited_users = models.ManyToManyField(User, related_name='invited_trips', blank=True)
     accepted_users = models.ManyToManyField(User, related_name='accepted_trips', blank=True)
+
+    def accept_invitation(self, user):
+        if user in self.invited_users.all():
+            self.invited_users.remove(user)
+            self.accepted_users.add(user)
+            self.save()
 
     def __str__(self):
         return self.name
@@ -46,6 +53,12 @@ class TripRequest(models.Model):
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def accept_invitation(self):
+        if self.status == 'pending':
+            self.status = 'accepted'
+            self.trip.accept_invitation(self.receiver)
+            self.save()
 
 class Checklist(models.Model):
     todos = models.CharField(max_length=250)

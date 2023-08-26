@@ -4,6 +4,18 @@
 
 <button style="background-color: #9cc8e1; border: none; margin-top: 50px; padding: 10px 20px; border-radius: 20px; font-weight: bolder;"><a href="{% url 'trips_create' %}">Create a Trip</a></button>
 
+<h2>Trips with Pending Invitation Requests</h2>
+{% if pending_invitations.exists %}
+    <ul>
+        {% for invitation in pending_invitations %}
+            <li><a href="{% url 'trips_detail' invitation.trip.pk %}">{{ invitation.trip.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No pending invitation requests.</p>
+{% endif %}
+
+
 <h1>Upcoming Trips</h1>
 
 
