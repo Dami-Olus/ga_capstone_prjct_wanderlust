@@ -39,8 +39,10 @@
             </div>
           <div>
           <ul>
-            <!-- changes below -->
+            <!-- changes below --> 
+            <li><a href="">Welcome, {{user.username}}</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
+           
             {% if user.is_authenticated %}
            
             <li>

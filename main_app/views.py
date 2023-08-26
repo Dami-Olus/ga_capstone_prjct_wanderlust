@@ -205,21 +205,26 @@ class DestinationDelete(LoginRequiredMixin, DeleteView):
 # View for routes: add checklist, add activity, add photo, assoc destination, invitations
 @login_required
 def invite_users(request, trip_id):
-    trip = get_object_or_404(Trips, id=trip_id)
-    print(trip_id)
+    trip = get_object_or_404(Trips, pk=trip_id)
+
+    # Get the list of users not added to the trip, excluding the trip creator
+    users_not_added = User.objects.exclude(id=trip.user_id).exclude(accepted_trips=trip_id)
+
     if request.method == 'POST':
-        form = InvitationForm(request.POST, instance=trip)
-        if form.is_valid():
-            accepted_users = form.save()
-            accepted_users.trip = trip
-            accepted_users.save()
-            print(accepted_users)
-            print(form.data)
-            return redirect('trips_detail', pk=trip_id)
-    else:
-        form = InvitationForm(instance=trip)
-        form.fields['accepted_users'].queryset = form.fields['accepted_users'].queryset.exclude(username='root')
-    return render(request, 'main_app/invite_users.html', {'form': form, 'trip': trip, 'trip_id': trip_id})
+        selected_user_ids = request.POST.getlist('selected_users')
+        selected_users = User.objects.filter(id__in=selected_user_ids)
+
+        for user in selected_users:
+            trip.accepted_users.add(user)
+
+        return redirect('trips_detail', pk=trip_id)
+
+    context = {
+        'trip': trip,
+        'users_not_added': users_not_added,
+    }
+
+    return render(request, 'main_app/invite_users.html', context)
 
 @login_required
 def add_checklist(request, trip_id):

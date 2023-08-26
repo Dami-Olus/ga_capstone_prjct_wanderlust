@@ -6,4 +6,25 @@
     {{ form.as_p }}
     <input type="submit" value="Update">
 </form>
+
+<!-- Show users not added to trip yet -->
+<div>
+    <h4>Users not added to the trip</h4>
+    <form method="post" action="{% url 'invite_users' trip.id %}">
+        {% csrf_token %}
+        <ul class="friend-list">
+            {% for friend in users_not_added %}
+                <li class="friend-item">
+                    <label>
+                        <input type="checkbox" name="selected_users" value="{{ friend.id }}">
+                        {{ friend.username }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Send Invite</button>
+    </form>
+</div>
+
+
 {% endblock %} 
