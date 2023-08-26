@@ -22,9 +22,13 @@
 {% if upcoming_trips %}
 <ul style="display: flex; gap: 20px">
   {% for trip in upcoming_trips %}
+  <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;"
+        >
   <li
     style="
       background-color: #9cc8e1;
+      color: black;
+      border-radius: 20px;
       margin-bottom: 10px;
       height: 320px; /* Increased height to accommodate trip details */
       width: 400px;
@@ -37,7 +41,7 @@
   >
     <div
       class="image-scroll"
-      style="display: flex; transition: transform 1s ease-in-out"
+      style="display: flex; transition: transform 1s ease-in-out;"
       onmouseenter="startScroll(this)"
       onmouseleave="stopScroll(this)"
     >
@@ -67,9 +71,8 @@
         text-align: center;
       "
     >
-      <a href="{% url 'trips_detail' pk=trip.id %}" style="font-size: x-large"
-        >{{ trip.name }}</a
-      >
+      
+        <p>{{ trip.name }}</p>
       <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
     </div>
     <div class="days-left" style="position: absolute; top: 0; right: 10px">
@@ -78,6 +81,7 @@
 
    
   </li>
+  </a>
   {% endfor %}
 </ul>
 {% else %}

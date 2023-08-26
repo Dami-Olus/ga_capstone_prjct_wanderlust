@@ -1,26 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Travels going to {{trip.name}}</h1>
 
+<style>
+/* styles.css */
+.invite-form-container {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
 
-<!-- Show users not added to trip yet -->
-<div>
-    <h4>Users not added to the trip</h4>
+.friend-list {
+    list-style: none;
+    padding: 0;
+}
+
+.friend-item {
+    margin-bottom: 10px;
+}
+
+.friend-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.friend-checkbox {
+    margin-right: 5px;
+}
+
+.invite-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.invite-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+
+<h1>Invite Friends to Join "{{ trip.name }}"</h1>
+
+<div class="invite-form-container">
     <form method="post" action="{% url 'invite_users' trip.id %}">
         {% csrf_token %}
         <ul class="friend-list">
             {% for friend in users_not_added %}
                 <li class="friend-item">
-                    <label>
-                        <input type="checkbox" name="selected_users" value="{{ friend.id }}">
+                    <label class="friend-label">
+                        <input type="checkbox" name="selected_users" value="{{ friend.id }}" class="friend-checkbox">
                         {{ friend.username }}
                     </label>
                 </li>
             {% endfor %}
         </ul>
-        <button type="submit">Send Invite</button>
+        <button type="submit" class="invite-button">Send Invites</button>
     </form>
 </div>
 
-
-{% endblock %} 
+{% endblock %}
