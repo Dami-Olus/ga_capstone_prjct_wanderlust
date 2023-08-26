@@ -86,11 +86,13 @@
   <div>
     <div>
       <h4>Invited Users:</h4>
+      {% if object.user == request.user %}
 <div style="display: flex; gap: 20px; align-items: center;">
   {% for user in object.invited_users.all %}
   <p style="background-color: #9cc8e1; border-radius: 10px; padding: 2px 10px;">{{ user.username }}</p>
   {% endfor %}
 </div>
+{% endif %}
     </div>
     
     <h4>You are travelling with</h4>
