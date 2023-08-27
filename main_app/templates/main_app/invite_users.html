@@ -1,50 +1,59 @@
-{% extends 'base.html' %}
-{% block content %}
-
+<!DOCTYPE html>
+<html>
+<head>
 <style>
-/* styles.css */
-.invite-form-container {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.friend-list {
-    list-style: none;
-    padding: 0;
+/* Style the checkbox container */
+.friend-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .friend-item {
-    margin-bottom: 10px;
+    list-style: none;
 }
 
-.friend-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
+/* Style the custom checkbox */
 .friend-checkbox {
-    margin-right: 5px;
+  margin-right: 10px;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
+/* Style the custom checkbox when checked */
+.friend-checkbox:checked {
+  border-color: #2196F3; /* Use your preferred color here */
+  background-color: #2196F3;
+}
+
+/* Style the label text */
+.friend-username {
+  font-size: 18px;
+}
+
+/* Style the invite button */
 .invite-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .invite-button:hover {
-    background-color: #0056b3;
+  background-color: #1769aa; /* Darker color on hover */
 }
-
 </style>
+</head>
+<body>
 
 <h1>Invite Friends to Join "{{ trip.name }}"</h1>
 
@@ -56,7 +65,7 @@
                 <li class="friend-item">
                     <label class="friend-label">
                         <input type="checkbox" name="selected_users" value="{{ friend.id }}" class="friend-checkbox">
-                        {{ friend.username }}
+                        <span class="friend-username">{{ friend.username }}</span>
                     </label>
                 </li>
             {% endfor %}
@@ -65,4 +74,5 @@
     </form>
 </div>
 
-{% endblock %}
+</body>
+</html>

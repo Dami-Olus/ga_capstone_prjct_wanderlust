@@ -18,34 +18,33 @@
       <div class="signup-form">
         <h1>Sign Up</h1>
         <p class="red-text">{{ error_message }}</p>
-        <form method="POST" action="{% url 'signup' %}">
-          <div class="card">
-            <div class="card-content">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" class="btn" value="Sign Up">
-        </form>
-        <p>OR</p>
-      <div>
-        <a href="{% url 'social:begin' 'google-oauth2' %}"
-        ><button class="google-button">
-          <span>
-            <img
-              src="{% static 'assets/images/Google_Icons-09-512.webp' %}"
-              style="height: 40px"
-              alt="Google Icon"
-            />
-          </span>
-
-          Login with Google
-        </button></a
-      >
-      
-      </div>
-      
-      <br>
-        <p>Already have an account?<a href="{% url 'login' %}">Log In</a> </p>
-      </div>
+          <form method="POST" action="{% url 'signup' %}">
+            <div class="card">
+              <div class="card-content">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn" value="Sign Up">
+          </form>
+        </div>
+      <p>OR</p>
     </div>
+    <div>
+      <a href="{% url 'social:begin' 'google-oauth2' %}">
+        <button class="google-button">
+        <span>
+          <img
+            src="{% static 'assets/images/Google_Icons-09-512.webp' %}"
+            style="height: 40px"
+            alt="Google Icon"
+          />
+        </span>
+
+        Sign Up with Google
+      </button>
+      </a>
+    </div>
+    
+  <br>
+    <p>Already have an account?<a href="{% url 'login' %}">Log In</a> </p>
   </div>
 {% endblock %}
