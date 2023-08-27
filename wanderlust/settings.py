@@ -46,16 +46,8 @@ SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE')
 ALLOWED_HOSTS = ['ancient-voice-480.fly.dev', 'localhost','127.0.0.1' ]
 CSRF_TRUSTED_ORIGINS = ['https://ancient-voice-480.fly.dev']
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m4=axowjar4mbqn57&4p^m8_+_hhd*&)08o@b=iibf_7#&hig7'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 
 # Application definition
 
@@ -164,8 +156,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '389532196066-ek5s6nn9o7qo8v6i0vsvhco73kfdruv2.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['GOOGLE_SECRET_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '568716709147-ejcclf4ip5sk7k3d1gefhrru57p45122.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
