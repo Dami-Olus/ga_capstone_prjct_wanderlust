@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+<style>
+  .google-button {
+    border: none;
+    background-color: #9cc8e1;
+    text-align: center;
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
+</style>
+
 {% block content %}
   <div class="signup">
     <div class="flex-container" style="display: flex; align-items: center; justify-content: space-between;">
@@ -14,7 +24,27 @@
           {% csrf_token %}
           {{ form.as_p }}
           <input type="submit" class="btn" value="Sign Up">
+          
         </form>
+        <p>OR</p>
+      <div>
+        <a href="{% url 'social:begin' 'google-oauth2' %}"
+        ><button class="google-button">
+          <span>
+            <img
+              src="{% static 'assets/images/Google_Icons-09-512.webp' %}"
+              style="height: 40px"
+              alt="Google Icon"
+            />
+          </span>
+
+          Login with Google
+        </button></a
+      >
+      
+      </div>
+      
+      <br>
         <p>Already have an account?<a href="{% url 'login' %}">Log In</a> </p>
       </div>
     </div>

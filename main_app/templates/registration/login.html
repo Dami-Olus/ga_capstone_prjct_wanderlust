@@ -2,44 +2,51 @@
 
 <style>
   /* styles.css */
-.login-container {
+  .login-container {
     width: 300px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f8f8f8;
-}
+  }
 
-.login-container h2 {
+  .login-container h2 {
     text-align: center;
-}
+  }
 
-.login-container form {
+  .login-container form {
     display: flex;
     flex-direction: column;
-}
+  }
 
-.login-container input[type="text"],
-.login-container input[type="password"] {
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
-}
+  }
 
-.login-container button {
+  .login-container button {
     padding: 10px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-}
+  }
 
+  .google-button {
+    border: none;
+    background-color: #9cc8e1;
+    text-align: center;
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
 </style>
 
-<div style="display: flex; align-items: center; justify-content: space-between;">
+<div style="display: flex; align-items: center; justify-content: space-between">
   <img src="{% static 'assets/images/hero_img.png' %}" alt="Hero Image" />
   <div>
     <h1>Log In</h1>
@@ -51,14 +58,24 @@
           <input type="hidden" name="next" value="{{ next }}" />
           <button type="submit" class="btn">Log In</button>
           <p>OR</p>
-          <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+          <a href="{% url 'social:begin' 'google-oauth2' %}"
+            ><button class="google-button">
+              <span>
+                <img
+                  src="{% static 'assets/images/Google_Icons-09-512.webp' %}"
+                  style="height: 40px"
+                  alt="Google Icon"
+                />
+              </span>
 
-         
+              Login with Google
+            </button></a
+          >
         </form>
-        <p>Don't have an account?<a href="{% url 'signup' %}">Sign Up</a> </p>
+        <br>
+        <p>Don't have an account?<a href="{% url 'signup' %}">Sign Up</a></p>
       </div>
     </div>
-
   </div>
 </div>
 {% endblock %}
