@@ -15,6 +15,8 @@ boto3 = "^1.28.34"
 django-environ = "^0.10.0"
 requests = "^2.31.0"
 googlemaps = "^4.10.0"
+social-auth-app-django = "^5.2.0"
+social = "^0.1.dev3"
 
 
 [build-system]
