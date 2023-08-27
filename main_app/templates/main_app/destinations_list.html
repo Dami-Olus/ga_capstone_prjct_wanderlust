@@ -6,12 +6,20 @@
 
 <div style="margin-bottom: 30px;">
 <h1>Places to go</h1>
-<div class="search-bar">
-  <form method="get" action="{% url 'destinations_index' %}">
-    <input type="text" name="search" placeholder="Search Destinations">
-    <input type="submit" value="Search">
-  </form>
+<div style="margin-bottom: 30px;" >
+
+  <div class="search-bar" style="position:absolute; z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%); " >
+    <input method="get" action="{% url 'destinations_index' %}">
+      <input type="text" name="search" placeholder="Search Destinations" style="background-color: white; border: none; border-radius: 20px; box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);">
+      <input type="submit" value="Search">
+    </form>
+  </div>
+  <img src="{% static 'assets/images/hero_banner.jpeg' %}" alt="" style="height:200px; width: 100%; object-fit: cover; position: relative;">
+ 
 </div>
+
+
+
 <div  >
   {% if object_list %}
   <div style="display: flex; flex-wrap: wrap;">
