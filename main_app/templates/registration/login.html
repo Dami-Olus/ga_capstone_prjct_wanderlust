@@ -50,6 +50,9 @@
           {% csrf_token %} {{ form.as_p }}
           <input type="hidden" name="next" value="{{ next }}" />
           <button type="submit" class="btn">Log In</button>
+          <p>OR</p>
+          <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+
          
         </form>
         <p>Don't have an account?<a href="{% url 'signup' %}">Sign Up</a> </p>

@@ -354,6 +354,12 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+def google_auth_callback(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        return redirect('login')
+
 @login_required
 def mark_complete(request, checklist_id):
     checklist = get_object_or_404(Checklist, pk=checklist_id)
