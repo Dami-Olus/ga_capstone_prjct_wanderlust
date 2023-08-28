@@ -94,7 +94,7 @@
 <h1>Past Trips</h1>
 
 {% if past_trips %}
-<ul style="display: flex; gap: 20px">
+<ul style="display: flex; gap: 20px; flex-wrap: wrap;">
   {% for trip in past_trips %}
   <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;">
   <li
