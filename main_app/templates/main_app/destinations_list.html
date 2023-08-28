@@ -6,12 +6,12 @@
 
 <div style="margin-bottom: 30px;">
 <h1>Places to go</h1>
-<div style="margin-bottom: 30px; background-color: yellow; position: relative;" >
-  <img src="{% static 'assets/images/hero_banner.jpeg' %}" alt="" style="height:200px; width: 100%; object-fit: cover; ">
+<div style="margin-bottom: 30px;  position: relative;" >
+  <img src="{% static 'assets/images/banner.jpeg' %}" alt="" style="height:200px; width: 100%; object-fit: cover; ">
   <div class="search-bar" style="position:absolute; z-index: 10; top: 50%; left: 50%; transform: translate(-50%, -50%);  width: 200px" >
     
     <form method="get" action="{% url 'destinations_index' %}">
-      <input type="text" name="search" placeholder="Search Destinations" style="background-color: white; border: none; border-radius: 20px; box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75); position: relative; ">
+      <input type="text" name="search" placeholder="    Search Destinations" style="background-color: white; border: none; border-radius: 20px; box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75); position: relative; ">
      
       
     </form>
@@ -24,7 +24,7 @@
 
 <div  >
   {% if object_list %}
-  <div style="display: flex; flex-wrap: wrap;">
+  <div style="display: flex; flex-wrap: wrap; justify-content: center;">
     {% for destination in object_list %}
     <a href="{% url 'destinations_detail' pk=destination.id %}"
     >

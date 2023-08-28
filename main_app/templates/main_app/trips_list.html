@@ -27,6 +27,7 @@
   <li
     style="
       background-color: #9cc8e1;
+      box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
       color: black;
       border-radius: 20px;
       margin-bottom: 10px;
@@ -72,7 +73,7 @@
       "
     >
       
-        <p>{{ trip.name }}</p>
+        <h4>{{ trip.name }}</h4>
       <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
     </div>
     <div class="days-left" style="position: absolute; top: 0; right: 10px">
@@ -95,12 +96,12 @@
 {% if past_trips %}
 <ul style="display: flex; gap: 20px">
   {% for trip in past_trips %}
-  <a href="{% url 'trips_detail' pk=trip.id %}" style="font-size: x-large"
-        >
+  <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;">
   <li
     style="
-       background-color: #9cc8e1;
-      color: black;
+      background-color: #9cc8e1;
+      box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
+      color: black !important;
       border-radius: 20px;
       margin-bottom: 10px;
       height: 320px; /* Increased height to accommodate trip details */
@@ -144,10 +145,10 @@
         text-align: center;
       "
     >
-      {{ trip.name }}
-      <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
+      <h4 style="color: black">{{ trip.name }}</h4>
+      <p style="color: black">{{ trip.startDate }} - {{ trip.endDate }}</p>
     </div>
-    <div class="days-left" style="position: absolute; top: 0; right: 10px">
+    <div class="days-left" style="position: absolute; top: 0; right: 10px; color: black">
       {{ trip.days_until }} days ago
     </div>
  

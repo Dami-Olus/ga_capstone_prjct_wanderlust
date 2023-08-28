@@ -43,7 +43,7 @@ DEBUG = env('DEBUG')
 CSRF_COOKIE_SECURE = env('CSRF_COOKIE_SECURE')
 SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE')
 
-ALLOWED_HOSTS = ['ancient-voice-480.fly.dev', 'localhost','127.0.0.1' ]
+ALLOWED_HOSTS = ['ancient-voice-480.fly.dev', 'localhost','127.0.0.1','.vercel.app' ]
 CSRF_TRUSTED_ORIGINS = ['https://ancient-voice-480.fly.dev']
 
 # SECURITY WARNING: don't run with debug turned on in production!
