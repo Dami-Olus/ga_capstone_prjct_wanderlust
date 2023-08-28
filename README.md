@@ -2,6 +2,10 @@
 # About
 Wanderlust is a comprehensive travel planning app that assists users in meticulously organizing their upcoming trips.
 
+- Trello - https://trello.com/invite/b/imFjB5oj/ATTI230147364c1e796625695b1ddecb54b3AB873F4C/wanderlust-a-trip-planning-app
+- Deployment - https://ancient-voice-480.fly.dev/trips/
+
+
 # Team
 - Sofi, Andrew, Ryan, Damola
 
