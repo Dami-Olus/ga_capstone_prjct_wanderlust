@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.http import JsonResponse
+from social_django.utils import psa
 
 from django.contrib.auth.models import User
 from .forms import InvitationForm
@@ -340,8 +341,11 @@ def remove_photo(request, destination_id, photo_id):
 
 
 # View for routes: login, signup, logout
+
 def signup(request):
     error_message = ''
+
+   
     
     if request.method == 'POST':
         # This is how to create a 'user' form object
@@ -360,6 +364,14 @@ def signup(request):
     form = SignupForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
+@psa('social:complete')
+def social_signup(request, backend='google-oauth2'):
+    # This view is used for the social authentication process
+    user = request.backend.do_auth(request.user)
+    login(request, user, backend='social.backends.google.GoogleOAuth2')
+    return redirect('trips_index')  # Redirect to your desired page
 
 def google_auth_callback(request):
     if request.user.is_authenticated:

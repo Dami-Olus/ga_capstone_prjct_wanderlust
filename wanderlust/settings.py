@@ -152,9 +152,10 @@ LOGOUT_REDIRECT_URL = '/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
+    
     'django.contrib.auth.backends.ModelBackend',
 )
+
 
 
 LOGIN_URL = 'login'

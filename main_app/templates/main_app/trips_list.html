@@ -4,7 +4,7 @@
 
 <button style="background-color: #9cc8e1; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bolder;"><a href="{% url 'trips_create' %}">Create a Trip</a></button>
 
-<h2>Trips with Pending Invitation Requests</h2>
+<h2>Invites</h2>
 {% if pending_invitations.exists %}
     <ul>
         {% for invitation in pending_invitations %}
