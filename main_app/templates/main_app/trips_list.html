@@ -95,9 +95,13 @@
 {% if past_trips %}
 <ul style="display: flex; gap: 20px">
   {% for trip in past_trips %}
+  <a href="{% url 'trips_detail' pk=trip.id %}" style="font-size: x-large"
+        >
   <li
     style="
-      background-color: #9cc8e1;
+       background-color: #9cc8e1;
+      color: black;
+      border-radius: 20px;
       margin-bottom: 10px;
       height: 320px; /* Increased height to accommodate trip details */
       width: 400px;
@@ -140,14 +144,14 @@
         text-align: center;
       "
     >
-      <a href="{% url 'trips_detail' pk=trip.id %}" style="font-size: x-large"
-        >{{ trip.name }}</a
-      >
+      {{ trip.name }}
       <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
     </div>
     <div class="days-left" style="position: absolute; top: 0; right: 10px">
       {{ trip.days_until }} days ago
     </div>
+ 
+</a>
 
     <script>
       let scrollInterval;

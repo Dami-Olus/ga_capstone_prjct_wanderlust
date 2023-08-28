@@ -1,10 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-
-{% block content %}
-
-
-<div class="row" style="margin-top: 50px;">
+<div class="row" style="margin-top: 50px">
   <div class="col s6 col-offset-3">
     <div class="card">
       <div class="card-content">
@@ -12,54 +8,83 @@
         <p>{{ destinations.country }}</p>
         <p>{{ destinations.currency }}</p>
       </div>
+
+      {% if destinations.user == request.user %}
       <div class="card-action">
         <a href="{% url 'destinations_update' destinations.id %}">Edit</a>
         <a href="{% url 'destinations_delete' destinations.id %}">Delete</a>
       </div>
+      {% endif %}
     </div>
-  <!-- Insert photo markup below this comment -->
-  {% for photo in destinations.photos_set.all %}
-  <div>
+    
+    <!-- Insert photo markup below this comment -->
+    {% for photo in destinations.photos_set.all %}
+    <div style="display: flex">
+      <div>
+        <img
+          class="responsive-img"
+          src="{{photo.url}}"
+          style="
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            margin-left: 20px;
+          "
+        />
 
-  
-    <img class="responsive-img" src="{{photo.url}}" style="height: 100px; width: 100px; object-fit: cover; margin-left: 20px;">
-    <form action="{% url 'remove_destination_photo' destinations.id photo.id %}">
-      <br><br>
-      <button type="submit" class="btn">Delete Photo</button>
-  </form>
-  </div>
-  {% empty %}
+        <!-- Delete Photo -->
+        <form
+          action="{% url 'remove_destination_photo' destinations.id photo.id %}"
+        >
+          <br />
+          {% if photo.user == request.user %}
+          <button type="submit" class="btn">Delete Photo</button>
+          {% endif %}
+        </form>
+
+      </div>
+    </div>
+
+    {% empty %}
     <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-  {% endfor %}
-  <form action="{% url 'add_destination_photo' destinations.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
-    {% csrf_token %}
-    <input type="file" name="photo-file">
-    <br><br>
-    <button type="submit" class="btn">Upload Photo</button>
-</form>
+    {% endfor %}
+
+    <!-- Upload photo -->
+    <form
+      action="{% url 'add_destination_photo' destinations.id %}"
+      enctype="multipart/form-data"
+      method="POST"
+      class="card-panel"
+    >
+      {% csrf_token %}
+      <input type="file" name="photo-file" />
+      <br /><br />
+      <button type="submit" class="btn">Upload Photo</button>
+    </form>
+
   </div>
-    <iframe
+
+ <!-- Map -->
+  <iframe
     width="600"
     height="450"
-    style="border:0; margin-left: 25px;"
+    style="border: 0; margin-left: 25px"
     loading="lazy"
     allowfullscreen
     referrerpolicy="no-referrer-when-downgrade"
-    src= 'https://www.google.com/maps/embed/v1/search?key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y
-    &q=tourist+attractions+near+{{destinations.name}}' 
-    >
-
+    src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCgRAHdFcRKhO-Qszsqpt_fOq4Q7wUMK8Y
+    &q=tourist+attractions+near+{{destinations.name}}"
+  >
   </iframe>
-  <div class="card" style="float: right">
-  <div class="card-content" >
-    <p>Timezone ID: {{ timezone.timeZoneId }}</p>
-    <p>Timezone Name: {{ timezone.timeZoneName }}</p>
-</div>
-</div>
 
+<!-- Timezone card -->
+  <div class="card" style="float: right">
+    <div class="card-content">
+      <p>Timezone ID: {{ timezone.timeZoneId }}</p>
+      <p>Timezone Name: {{ timezone.timeZoneName }}</p>
+    </div>
+  </div>
 
 </div>
 
 {% endblock %}
-
-

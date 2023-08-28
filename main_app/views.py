@@ -51,7 +51,8 @@ class TripIndex(LoginRequiredMixin, ListView):
         accepted_trips = Trips.objects.filter(accepted_users=self.request.user)
         
         # Combine the user's created trips and accepted trips
-        user_related_trips = user_created_trips | accepted_trips
+        user_related_trips = (user_created_trips | accepted_trips).distinct() 
+
 
         # Get pending invitations for the logged-in user as the receiver
         pending_invitations = TripRequest.objects.filter(receiver=self.request.user, status='pending')
@@ -222,6 +223,12 @@ class DestinationDetail(LoginRequiredMixin, DetailView):
 class DestinationCreate(LoginRequiredMixin, CreateView): 
     model = Destinations
     form_class = AddDestinationForm
+
+    def form_valid(self, form):
+        # Assign the logged in user (self.request.user)
+        form.instance.user = self.request.user
+        # Let the CreateView do its job as usual
+        return super().form_valid(form)
     
 class DestinationUpdate(LoginRequiredMixin, UpdateView): 
     model = Destinations
@@ -317,7 +324,7 @@ def add_photo(request, destination_id):
             url = f'{os.environ["S3_BASE_URL"]}{bucket}/{key}'
             print(url)
             # create a photo in the db
-            Photos.objects.create(url=url, destination_id=destination)
+            Photos.objects.create(url=url, destination_id=destination, user=request.user)
         # save url to the photo model + add fk for trip_id or destination_id
         except Exception as err:
             print(err)
