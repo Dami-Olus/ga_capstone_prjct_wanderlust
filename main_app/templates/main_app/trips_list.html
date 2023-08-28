@@ -20,7 +20,7 @@
 
 
 {% if upcoming_trips %}
-<ul style="display: flex; gap: 20px">
+<ul style="display: flex; gap: 20px; flex-wrap: wrap;">
   {% for trip in upcoming_trips %}
   <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;"
         >
