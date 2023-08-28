@@ -32,7 +32,22 @@ Wanderlust is a comprehensive travel planning app that assists users in meticulo
 - See upcoming trips and days left to start date
 
 # Screen shots
-![screenshot1](assets/screenshots/2023-08-28 at 12.58.33.png)
+
+![screenshot1](main_app/static/assets/screenshots/screenshot1.png)
+
+![screenshot2](main_app/static/assets/screenshots/screenshot2.png)
+
+![screenshot3](main_app/static/assets/screenshots/screenshot3.png)
+
+![screenshot4](main_app/static/assets/screenshots/screenshot4.png)
+
+![screenshot5](main_app/static/assets/screenshots/screenshot5.png)
+
+![screenshot6](main_app/static/assets/screenshots/screenshot6.png)
+
+![screenshot7](main_app/static/assets/screenshots/screenshot7.png)
+
+![screenshot8](main_app/static/assets/screenshots/screenshot8.png)
 
 
 # Next Steps
