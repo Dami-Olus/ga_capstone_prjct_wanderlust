@@ -2,39 +2,22 @@
 
 <style>
   /* styles.css */
-  .login-container {
-    width: 300px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f8f8f8;
+  .login {
+    display: flex; align-items: center; justify-content: space-between
   }
 
-  .login-container h2 {
-    text-align: center;
+  .login img {
+    height: 400px;
   }
-
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .login-container input[type="text"],
-  .login-container input[type="password"] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-
-  .login-container button {
-    padding: 10px;
-    background-color: #007bff;
+  
+  .login button {
+  
+    background-color: #9cc8e1;
     color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    padding: 10px 10px;
   }
 
   .google-button {
@@ -44,19 +27,25 @@
     border-radius: 20px;
     padding: 5px 10px;
   }
+
+  @media (max-width: 768px) {
+    .login {
+    display: flex; flex-direction: column;
+  }
+  }
 </style>
 
-<div style="display: flex; align-items: center; justify-content: space-between">
+<div class="login">
   <img src="{% static 'assets/images/hero_img.png' %}" alt="Hero Image" />
   <div>
     <h1>Log In</h1>
 
-    <div class="card">
+    <div>
       <div class="card-content">
         <form method="POST" action="{% url 'login' %}">
           {% csrf_token %} {{ form.as_p }}
           <input type="hidden" name="next" value="{{ next }}" />
-          <button type="submit" class="btn">Log In</button>
+          <button type="submit">Log In</button>
           <!-- <p>OR</p>
            -->
         </form>

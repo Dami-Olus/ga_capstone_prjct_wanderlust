@@ -22,17 +22,30 @@
     />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <style>
+      .header {
+        background-color: #9cc8e1; display: flex; justify-content: space-between; align-items: center;
+      }
+      .hero-image{
+        height: 50px; width: 50px; margin-left: 20px;
+      }
+      main {
+        padding: 100px 100px;
+      }
+
+      footer {
+        position: fixed; bottom: 0; width: 100%; background-color: #9cc8e1; padding: 10px 20px;
+      }
+    </style>
+
   </head>
   <body>
     <header class="navbar-fixed">
       <nav>
-        <div style="background-color: #9cc8e1; display: flex; justify-content: space-between; align-items: center;">
-
-         
-          
-          
+        <div class="header">
             <div>
-              <img src="{% static 'assets/images/hero_img.png' %}" alt="Hero Image" style="height: 50px; width: 50px; margin-left: 20px;">
+              <img src="{% static 'assets/images/hero_img.png' %}" alt="Hero Image" class="hero-image">
               <a href="{% url 'home' %}" class="left brand-logo"
                 >&nbsp;&nbsp;Wanderlust</a
               >
@@ -61,10 +74,10 @@
         </div>
       </nav>
     </header>
-    <main style="padding: 100px 100px;">
+    <main>
         
         {% block content %} {% endblock %}</main>
-        <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%; background-color: #9cc8e1;">
+        <footer>
           <div class="right">All Rights Reserved, &copy; 2023 Wanderlust &nbsp;</div>
       </footer>
       <script>
