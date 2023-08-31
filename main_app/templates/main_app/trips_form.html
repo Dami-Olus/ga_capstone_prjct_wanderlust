@@ -2,11 +2,30 @@
 {% load static %}
 {% block content %}
 
+<style>
+    .trip-form-container {
+        display: flex !important;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    img {
+        height: 400px;
+    }
+
+    @media (max-width: 768px) {
+        .trip-form-container {
+        flex-direction: column;
+    }
+    }
+</style>
+
 <h1>{% if update %}Edit{% else %}Plan{% endif %} a Trip</h1>
 
-<div class="row">
+<div class="trip-form-container">
+    <img src="{% static 'assets/images/hero_img.png' %}" alt="Hero Image">
     <div class="col s12 m6">
-        <div class="card">
+        <div>
             <div class="card-content">
                 <form action="{% if update %}{% url 'trips_update' object.id %}{% else %}{% url 'trips_create' %}{% endif %}" method="POST">
                     {% csrf_token %}
@@ -36,7 +55,7 @@
                         {{ form.budget }}
                     </div>
 
-                    <button type="submit" class="btn">Submit!</button>
+                    <button type="submit">Submit!</button>
                 </form>
             </div>
         </div>
