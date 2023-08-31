@@ -1,193 +1,188 @@
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
-{% block content %}
+<style>
+  button {
+    background-color: #9cc8e1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bolder;
+  }
+  .trip-card {
+    background-color: #9cc8e1;
+    box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
+    color: black !important;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    height: 320px; /* Increased height to accommodate trip details */
+    width: 400px;
+    position: relative; /* Position the container */
+    overflow: hidden; /* Hide overflowing content */
+    display: flex;
+    flex-direction: column; /* Set container as a column */
+    justify-content: space-between; /* Space between content */
+  }
 
-<button style="background-color: #9cc8e1; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bolder;"><a href="{% url 'trips_create' %}">Create a Trip</a></button>
+  .trip-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
 
-<h2>Invites</h2>
-{% if pending_invitations.exists %}
-    <ul>
-        {% for invitation in pending_invitations %}
-            <li><a href="{% url 'trips_detail' invitation.trip.pk %}">{{ invitation.trip.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No pending invitation requests.</p>
-{% endif %}
+  .trip-image {
+    display: flex;
+    transition: transform 1s ease-in-out;
+  }
 
+  .trip-details {
+    position: absolute; /* Position the trip details */
+    bottom: 0; /* Fix at the bottom */
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.9
+    ); /* Semi-transparent background */
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+  }
 
-<h1>Upcoming Trips</h1>
+  .days-left {
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+</style>
 
+<div>
+  <button>
+    <a href="{% url 'trips_create' %}">Create a Trip</a>
+  </button>
 
-{% if upcoming_trips %}
-<ul style="display: flex; gap: 20px; flex-wrap: wrap;">
-  {% for trip in upcoming_trips %}
-  <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;"
+  <h2>Invites</h2>
+  {% if pending_invitations.exists %}
+  <ul>
+    {% for invitation in pending_invitations %}
+    <li>
+      <a href="{% url 'trips_detail' invitation.trip.pk %}"
+        >{{ invitation.trip.name }}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No pending invitation requests.</p>
+  {% endif %}
+
+  <h2>Upcoming Trips</h2>
+
+  {% if upcoming_trips %}
+  <ul class="trip-list">
+    {% for trip in upcoming_trips %}
+    <a href="{% url 'trips_detail' pk=trip.id %}">
+      <li class="trip-card">
+        <div
+          class="image-scroll"
+          class="trip-image"
+          onmouseenter="startScroll(this)"
+          onmouseleave="stopScroll(this)"
         >
-  <li
-    style="
-      background-color: #9cc8e1;
-      box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
-      color: black;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      height: 320px; /* Increased height to accommodate trip details */
-      width: 400px;
-      position: relative; /* Position the container */
-      overflow: hidden; /* Hide overflowing content */
-      display: flex;
-      flex-direction: column; /* Set container as a column */
-      justify-content: space-between; /* Space between content */
-    "
-  >
-    <div
-      class="image-scroll"
-      style="display: flex; transition: transform 1s ease-in-out;"
-      onmouseenter="startScroll(this)"
-      onmouseleave="stopScroll(this)"
-    >
-      {% for destination in trip.destination_ids.all %} 
-        {% for photo in destination.photos_set.all %}
-      <img
-        src="{{ photo.url }}"
-        alt="Destination Image"
-        style="flex-shrink: 0; width: 100%; object-fit: cover; margin-top: 20px"
-      />
-        {% endfor %} 
-      {% endfor %}
-    </div>
-    <div
-      class="trip-details"
-      style="
-        position: absolute; /* Position the trip details */
-        bottom: 0; /* Fix at the bottom */
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.9
-        ); /* Semi-transparent background */
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-      "
-    >
-      
-        <h4>{{ trip.name }}</h4>
-      <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
-    </div>
-    <div class="days-left" style="position: absolute; top: 0; right: 10px">
-      {{ trip.days_until }} days until start
-    </div>
+          {% for destination in trip.destination_ids.all %} 
+          {% for photo in destination.photos_set.all %}
+          <img
+            src="{{ photo.url }}"
+            alt="Destination Image"
+            style="
+              flex-shrink: 0;
+              width: 100%;
+              object-fit: cover;
+              margin-top: 20px;
+            "
+          />
+          {% endfor %} {% endfor %}
+        </div>
+        <div class="trip-details">
+          <h4>{{ trip.name }}</h4>
+          <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
+        </div>
+        <div class="days-left">{{ trip.days_until }} days until start</div>
+      </li>
+    </a>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No upcoming trips.</p>
+  {% endif %}
 
-   
-  </li>
-  </a>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No upcoming trips.</p>
-{% endif %}
+  <h2>Past Trips</h2>
 
+  {% if past_trips %}
+  <ul class="trip-list">
+    {% for trip in past_trips %}
+    <a href="{% url 'trips_detail' pk=trip.id %}">
+      <li class="trip-card">
+        <div
+          class="image-scroll"
+          class="trip-image"
+          onmouseenter="startScroll(this)"
+          onmouseleave="stopScroll(this)"
+        >
+          {% for destination in trip.destination_ids.all %} 
+            {% for photo in destination.photos_set.all %}
+          <img
+            src="{{ photo.url }}"
+            alt="Destination Image"
+            style="
+              flex-shrink: 0;
+              width: 100%;
+              object-fit: cover;
+              margin-top: 20px;
+            "
+          />
+          {% endfor %} {% endfor %}
+        </div>
+        <div class="trip-details">
+          <h4>{{ trip.name }}</h4>
+          <p>{{ trip.startDate }} - {{ trip.endDate }}</p>
+        </div>
+        <div class="days-left">{{ trip.days_until }} days ago</div>
+      </li>
+    </a>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No past trips.</p>
+  {% endif %}
+</div>
 
+<script>
+  let scrollInterval;
+  let isMouseOver = false;
 
-<h1>Past Trips</h1>
-
-{% if past_trips %}
-<ul style="display: flex; gap: 20px; flex-wrap: wrap;">
-  {% for trip in past_trips %}
-  <a href="{% url 'trips_detail' pk=trip.id %}" style="text-decoration: none;">
-  <li
-    style="
-      background-color: #9cc8e1;
-      box-shadow: 6px 4px 9px 0px rgba(0, 0, 0, 0.75);
-      color: black !important;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      height: 320px; /* Increased height to accommodate trip details */
-      width: 400px;
-      position: relative; /* Position the container */
-      overflow: hidden; /* Hide overflowing content */
-      display: flex;
-      flex-direction: column; /* Set container as a column */
-      justify-content: space-between; /* Space between content */
-    "
-  >
-    <div
-      class="image-scroll"
-      style="display: flex; transition: transform 1s ease-in-out"
-      onmouseenter="startScroll(this)"
-      onmouseleave="stopScroll(this)"
-    >
-      {% for destination in trip.destination_ids.all %} 
-        {% for photo in destination.photos_set.all %}
-      <img
-        src="{{ photo.url }}"
-        alt="Destination Image"
-        style="flex-shrink: 0; width: 100%; object-fit: cover; margin-top: 20px"
-      />
-        {% endfor %} 
-      {% endfor %}
-    </div>
-    <div
-      class="trip-details"
-      style="
-        position: absolute; /* Position the trip details */
-        bottom: 0; /* Fix at the bottom */
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.9
-        ); /* Semi-transparent background */
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-      "
-    >
-      <h4 style="color: black">{{ trip.name }}</h4>
-      <p style="color: black">{{ trip.startDate }} - {{ trip.endDate }}</p>
-    </div>
-    <div class="days-left" style="position: absolute; top: 0; right: 10px; color: black">
-      {{ trip.days_until }} days ago
-    </div>
- 
-</a>
-
-    <script>
-      let scrollInterval;
-      let isMouseOver = false;
-
-      function startScroll(container) {
+  function startScroll(container) {
+    if (!isMouseOver) {
+      isMouseOver = true;
+      scrollInterval = setInterval(function () {
         if (!isMouseOver) {
-          isMouseOver = true;
-          scrollInterval = setInterval(function () {
-            if (!isMouseOver) {
-              clearInterval(scrollInterval);
-              return;
-            }
-            const firstImage = container.querySelector("img");
-            const imageWidth = firstImage.offsetWidth;
-            container.style.transform = `translateX(-${imageWidth}px)`;
-            container.appendChild(firstImage.cloneNode(true));
-            container.removeChild(firstImage);
-            container.style.transform = "translateX(0)";
-          }, 2000);
+          clearInterval(scrollInterval);
+          return;
         }
-      }
-
-      function stopScroll(container) {
-        isMouseOver = false;
-        clearInterval(scrollInterval);
+        const firstImage = container.querySelector("img");
+        const imageWidth = firstImage.offsetWidth;
+        container.style.transform = `translateX(-${imageWidth}px)`;
+        container.appendChild(firstImage.cloneNode(true));
+        container.removeChild(firstImage);
         container.style.transform = "translateX(0)";
-      }
-    </script>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No past trips.</p>
-{% endif %} 
+      }, 2000);
+    }
+  }
 
+  function stopScroll(container) {
+    isMouseOver = false;
+    clearInterval(scrollInterval);
+    container.style.transform = "translateX(0)";
+  }
+</script>
 
 {% endblock %}
