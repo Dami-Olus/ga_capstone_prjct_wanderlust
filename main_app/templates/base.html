@@ -40,11 +40,11 @@
           <div>
           <ul>
             <!-- changes below --> 
-            <li><a href="">Welcome, {{user.username}}</a></li>
+            
             <li><a href="{% url 'about' %}">About</a></li>
            
             {% if user.is_authenticated %}
-           
+            <li><a href="">Welcome, {{user.username}}</a></li>
             <li>
               <a href="{% url 'destinations_index' %}">Destinations</a>
             </li>

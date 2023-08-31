@@ -83,8 +83,6 @@ class TripIndex(LoginRequiredMixin, ListView):
         return context
 
     
-
-
 class TripDetail(LoginRequiredMixin, DetailView): 
     model = Trips
     fields = '__all__'
