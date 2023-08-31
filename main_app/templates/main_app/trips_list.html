@@ -34,6 +34,13 @@
     transition: transform 1s ease-in-out;
   }
 
+  img {
+    flex-shrink: 0;
+    width: 100%;
+    object-fit: cover;
+    margin-top: 20px;
+  }
+
   .trip-details {
     position: absolute; /* Position the trip details */
     bottom: 0; /* Fix at the bottom */
@@ -90,16 +97,7 @@
         >
           {% for destination in trip.destination_ids.all %} 
           {% for photo in destination.photos_set.all %}
-          <img
-            src="{{ photo.url }}"
-            alt="Destination Image"
-            style="
-              flex-shrink: 0;
-              width: 100%;
-              object-fit: cover;
-              margin-top: 20px;
-            "
-          />
+          <img src="{{ photo.url }}" alt="Destination Image" />
           {% endfor %} {% endfor %}
         </div>
         <div class="trip-details">
@@ -129,17 +127,8 @@
           onmouseleave="stopScroll(this)"
         >
           {% for destination in trip.destination_ids.all %} 
-            {% for photo in destination.photos_set.all %}
-          <img
-            src="{{ photo.url }}"
-            alt="Destination Image"
-            style="
-              flex-shrink: 0;
-              width: 100%;
-              object-fit: cover;
-              margin-top: 20px;
-            "
-          />
+          {% for photo in destination.photos_set.all %}
+          <img src="{{ photo.url }}" alt="Destination Image" />
           {% endfor %} {% endfor %}
         </div>
         <div class="trip-details">
